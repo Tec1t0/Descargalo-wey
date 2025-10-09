@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bisección: Aprende y Juega</title>
+
+    <!-- Carga local del CSS personalizado -->
+    <link rel="stylesheet" href="./style.css">
+    
+    <!-- Carga de Tailwind CSS (NOTA: Esta es la única línea que requiere internet 
+         para cargar la librería de diseño moderna. Si quieres 100% offline, 
+         deberías quitarla y usar solo CSS puro o descargar Tailwind.) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+</head>
+<body class="p-4 md:p-8">
+
+    <header class="mb-8 p-4 bg-white card shadow-lg">
+        <!-- Título Centrado -->
+        <h1 class="text-3xl font-bold text-center text-[#1d3557]">Calculadora y Juego del Método de Bisección</h1>
+    </header>
+
+    <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- COLUMNA IZQUIERDA: Herramientas y Gamificación -->
+        <section class="lg:col-span-1 space-y-8">
+            
+            <!-- TARJETA DE GAMIFICACIÓN -->
+            <div class="bg-white p-6 card">
+                <h2 class="text-xl font-semibold mb-3 text-[#e63946]">🏆 Progreso y Puntos</h2>
+                <div class="flex justify-between items-center mb-2">
+                    <p class="text-lg">Nivel: <span id="lvl" class="font-bold">1</span></p>
+                    <p class="text-lg">Puntos: <span id="points" class="font-bold text-[#1d3557]">0</span></p>
+                </div>
+                <div id="xp-bar" class="mb-4">
+                    <div id="xp" style="width: 0%;"></div>
+                </div>
+                <p class="text-xs text-gray-500 mb-4">Sube de nivel resolviendo desafíos y haciendo buenas estimaciones.</p>
+                <button id="challenge" class="btn-primary w-full py-2 rounded-lg font-semibold text-sm">
+                    Iniciar Desafío Aleatorio
+                </button>
+                <div id="leader" class="mt-4 text-sm p-3 bg-gray-50 rounded-lg">
+                    <h4>Puntuación Local</h4>
+                    <!-- Aquí se insertará el leaderboard por JS -->
+                    1. <b>Tú</b> — 0 pts
+                </div>
+                <button id="claim" class="btn-secondary w-full py-1 mt-2 rounded-lg text-xs">Reclamar 100 XP (Prueba)</button>
+            </div>
+
+            <!-- TARJETA DE PARÁMETROS -->
+            <div class="bg-white p-6 card">
+                <h2 class="text-xl font-semibold mb-4 text-[#457b9d]">⚙️ Parámetros de Bisección</h2>
+                <div class="space-y-3">
+                    <label class="block">
+                        <span class="text-sm font-medium text-gray-700">Función f(x):</span>
+                        <input type="text" id="fn" value="x^3 - 7" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border" placeholder="Ej: x^3 - 7">
+                    </label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="block">
+                            <span class="text-sm font-medium text-gray-700">Intervalo [a]:</span>
+                            <input type="number" id="a" value="1" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
+                        </label>
+                        <label class="block">
+                            <span class="text-sm font-medium text-gray-700">Intervalo [b]:</span>
+                            <input type="number" id="b" value="2" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
+                        </label>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="block">
+                            <span class="text-sm font-medium text-gray-700">Tolerancia (Tol):</span>
+                            <input type="number" id="tol" value="0.0001" step="0.00001" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
+                        </label>
+                        <label class="block">
+                            <span class="text-sm font-medium text-gray-700">Máx. Iteraciones:</span>
+                            <input type="number" id="iterMax" value="6" min="3" max="6" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="mt-6 space-y-2">
+                    <button id="run" class="btn-secondary w-full py-3 rounded-lg font-bold text-lg">
+                        EJECUTAR Bisección Completa
+                    </button>
+                    <button id="step" class="btn-primary w-full py-2 rounded-lg font-semibold">
+                        Paso a Paso (1 Iteración)
+                    </button>
+                    <button id="reset" class="w-full py-1 text-xs text-gray-600 hover:text-red-500 transition duration-150">
+                        Reiniciar Datos de la Simulación
+                    </button>
+                </div>
+            </div>
+            
+            <!-- TARJETA DE RESULTADOS -->
+            <div class="bg-white p-6 card">
+                <h2 class="text-xl font-semibold mb-3 text-[#e63946]">✨ Resultados</h2>
+                <p class="text-sm mb-2">Raíz Aproximada (x_m): <span id="root" class="text-xl font-bold text-[#1d3557]">—</span></p>
+                <p class="text-sm">Total de Iteraciones: <span id="iters" class="font-bold">0</span></p>
+                <button id="exportCSV" class="btn-primary w-full py-2 rounded-lg font-semibold mt-4 text-sm">
+                    Exportar Tabla a CSV
+                </button>
+            </div>
+
+        </section>
+
+        <!-- COLUMNA CENTRAL: Gráfico y Minijuego -->
+        <section class="lg:col-span-2 space-y-8">
+            
+            <!-- TARJETA DEL GRÁFICO -->
+            <div class="bg-white p-6 card">
+                <h2 class="text-xl font-semibold mb-4 text-[#457b9d]">📈 Gráfico de f(x) y Aproximación</h2>
+                <div class="relative h-64 md:h-80 lg:h-96">
+                    <canvas id="plotCanvas"></canvas>
+                </div>
+            </div>
+            
+            <!-- TARJETA DEL MINIJUEGO -->
+            <div class="bg-white p-6 card">
+                <h2 class="text-xl font-semibold mb-4 text-[#e63946]">🎯 Minijuego: Adivina la Interpolación</h2>
+                <p class="text-sm text-gray-700 mb-4">Usa una línea recta entre f(pA) y f(pB) para estimar dónde cruza el Eje X (Método de la Secante).</p>
+                
+                <!-- Contenedor para el gráfico de p5.js -->
+                <div id="p5-container" class="border border-gray-200 rounded-lg bg-gray-100 overflow-hidden">
+                    <!-- El canvas se genera aquí por p5.js -->
+                </div>
+
+                <div class="grid grid-cols-3 gap-3 mt-4 mb-4">
+                    <label class="block">
+                        <span class="text-xs font-medium text-gray-600">Punto A (pA):</span>
+                        <input type="number" id="pa" value="1.5" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 text-sm border">
+                    </label>
+                    <label class="block">
+                        <span class="text-xs font-medium text-gray-600">Punto B (pB):</span>
+                        <input type="number" id="pb" value="1.9" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 text-sm border">
+                    </label>
+                    <label class="block">
+                        <span class="text-xs font-medium text-gray-600">Tu Estimación (Guess):</span>
+                        <input type="number" id="guess" value="1.8" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 text-sm border">
+                    </label>
+                </div>
+                
+                <button id="checkGuess" class="btn-secondary w-full py-2 rounded-lg font-semibold">
+                    Comprobar Estimación y Ganar Puntos
+                </button>
+                <p id="interpRes" class="text-center mt-3 text-sm font-medium text-[#1d3557]"><!-- Resultado aquí --></p>
+            </div>
+
+            <!-- TARJETA DE LA TABLA DE ITERACIONES -->
+            <div class="bg-white p-6 card">
+                <h2 class="text-xl font-semibold mb-4 text-[#457b9d]">📋 Tabla de Iteraciones</h2>
+                <div class="overflow-x-auto">
+                    <table id="table" class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Iter</th>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">a</th>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">b</th>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">m</th>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">f(m)</th>
+                                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Error |(b-a)/2|</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <!-- Datos de iteración van aquí -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Librerías JS necesarias (cargadas localmente) -->
+    <script src="./libs/math.min.js"></script>
+    <script src="./libs/chart.min.js"></script>
+    <script src="./libs/p5.min.js"></script>
+    
+    <!-- Lógica de la aplicación -->
+    <script src="./script.js"></script>
+    <script src="./p5_game.js"></script>
+
+</body>
+</html>
