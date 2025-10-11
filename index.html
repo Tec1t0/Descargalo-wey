@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Metodo de Bisección & Desafío</title>
+    
+    <!-- MEJORA SEO: Meta descripción para Google -->
+    <meta name="description" content="Calculadora interactiva del Método de Bisección con un juego de adivinanzas, sistema de niveles y visualización gráfica de la convergencia de la raíz.">
+    
+    <!-- Enlace al archivo de estilos CSS -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Carga de librerías -->
+    <script src="libs/math.min.js"></script>
+    <script src="libs/chart.umd.min.js"></script>
+    <!-- NUEVO: Plugin de Zoom para Chart.js -->
+    <script src="libs/chartjs-plugin-zoom.min.js"></script>
+    <script src="libs/p5.min.js"></script>
+</head>
+
+<body>
+
+    <header>
+        <h1 >Método de Bisección</h1>
+        <p class="subtitle">Encuentra la raíz de una función no lineal y ¡pon a prueba tu habilidad!</p>
+    </header>
+
+    <main>
+        
+        <!-- SECCIÓN 1: Ingreso de Datos (Calculadora Principal) -->
+        <section id="input-section">
+            <h2>Calculadora</h2>
+            <form id="bisection-form">
+                
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    <!-- Función f(x) -->
+                    <div class="form-group">
+                        <label for="function-input">Función f(x):</label>
+                        <input type="text" id="function-input" placeholder="Ej: x^3 - 7" required
+                               value="x^2 - 3">
+                        <p style="font-size: 0.75rem; color: #777; margin-top: 4px;">Usa 'x' como variable. Ej: log(x), sin(x), exp(x)</p>
+                    </div>
+
+                    <div class="interval-container">
+                        <!-- Intervalo [a] -->
+                        <div class="form-group">
+                            <label for="interval-a">Intervalo [a]:</label>
+                            <input type="number" id="interval-a" step="any" placeholder="1" required
+                                   value="1">
+                        </div>
+                        <!-- Intervalo [b] -->
+                        <div class="form-group">
+                            <label for="interval-b">Intervalo [b]:</label>
+                            <input type="number" id="interval-b" step="any" placeholder="2" required
+                                   value="2">
+                        </div>
+                    </div>
+                    
+                    <!-- Número de Iteraciones -->
+                    <div class="form-group"> 
+                        <label for="iterations">Iteraciones (3-6):</label>
+                        <input type="number" id="iterations" min="3" max="6" value="3" required>
+                    </div>
+                </div>
+
+                <!-- Botón de Cálculo -->
+                <button type="submit">
+                    Calcular Raíz
+                </button>
+            </form>
+            
+            <div id="error-message" class="error hidden"></div>
+        </section>
+        
+        <!-- SECCIÓN 4: Desafío de la Raíz (Minijuego con P5.js) -->
+        <section id="challenge-section">
+            <h2>Desafío de la Raíz</h2>
+            <div id="p5-canvas-container" style="display: flex; justify-content: center; margin-bottom: 1rem;">
+                <!-- El lienzo de p5.js se insertará aquí -->
+            </div>
+            <div id="challenge-info">
+                <p>Función: <strong id="challenge-func">---</strong></p>
+                <p>Intervalo: <strong id="challenge-interval">---</strong></p>
+                <!-- Nuevo formulario para la adivinanza del usuario -->
+                <form id="challenge-guess-form" style="margin-top: 15px; display: flex; gap: 10px;">
+                    <div class="form-group" style="flex-grow: 1;">
+                        <label for="guess-input" style="font-size: 0.9rem;">Tu Adivinanza (x):</label>
+                        <input type="number" id="guess-input" step="any" placeholder="Ej: 1.5" required>
+                    </div>
+                    <button type="submit" id="check-guess-btn" style="width: 120px; padding: 0.6rem; margin-top: 1.5rem; flex-shrink: 0;">
+                        Verificar
+                    </button>
+                </form>
+                <div id="challenge-feedback" class="success hidden"></div>
+                
+                <!-- BARRA DE EXPERIENCIA Y NIVEL (NUEVO) -->
+                <div id="exp-container">
+                    <p id="level-display">Nivel: 1</p>
+                    <div id="exp-bar-wrapper">
+                        <div id="exp-bar-fill" style="width: 0%;"></div>
+                        <div id="exp-bar-text">0 / 100 EXP</div>
+                    </div>
+                </div>
+                <!-- FIN BARRA DE EXPERIENCIA -->
+                
+            </div>
+            <button id="new-challenge-btn" type="button" style="margin-top: 1rem;">
+                Iniciar / Nuevo Desafío
+            </button>
+        </section>
+
+        <!-- SECCIÓN 3: Visualización Gráfica (Calculadora Principal) -->
+        <section id="visualization-section">
+            <h2>Visualización Gráfica</h2>
+            <div style="height: 600px;">
+                <canvas id="function-chart"></canvas>
+            </div>
+            <!-- Nuevo botón para restablecer el zoom -->
+            <button id="reset-zoom-btn" type="button" style="width: 100%; margin-top: 10px;">
+                Restablecer Zoom
+            </button>
+            <div id="summary-result">
+                Esperando el cálculo...
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: Resultados Numéricos (Calculadora Principal) -->
+        <section id="results-section">
+            <h2>Resultados Numéricos</h2>
+            <div class="table-container">
+                <table class="min-w-full">
+                    <thead>
+                        <tr>
+                            <th>n</th> 
+                            <th>a</th>
+                            <th>b</th>
+                            <th>m = (a+b)/2</th>
+                            <th>f(m)</th>
+                            <th>Error Relativo (%)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="results-table-body">
+                        <!-- Las filas de resultados se insertarán aquí por JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+    </main>
+    
+    <footer>
+        <p>Desarollado por: [Axel Montero, Marcelo Barraza, Matías Vera] | Implementado con Math.js, Chart.js y p5.js</p>
+    </footer>
+
+    <!-- Enlace al archivo de lógica JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
+
+

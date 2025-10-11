@@ -1,0 +1,256 @@
+:root {
+    --primary-color: #007bff;
+    --background-color: #f4f7f9;
+    --text-color: #333;
+    --container-bg: #ffffff;
+    --error-color: #d9534f;
+    --success-color: #5cb85c;
+    --exp-color: #ffc107; /* Nuevo color para la barra de EXP */
+}
+
+/* Fuente original solicitada */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    justify-content: center
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+    justify-content: center
+}
+
+p.subtitle {
+    color: #777;
+    margin-top: 0.5rem;
+}
+
+/* Max-width original de 900px */
+main {
+    max-width: 900px; 
+    margin: 0 auto;
+    display: grid;
+    gap: 30px;
+    grid-template-columns: 1fr; /* Default: una columna para móvil */
+}
+
+/* Layout para escritorio (desktop) */
+@media (min-width: 768px) {
+    main {
+        /* Dos columnas: Input/Challenge a la izquierda, Resultados/Gráfico a la derecha */
+        grid-template-columns: 1fr 1fr; 
+    }
+    #results-section {
+        grid-column: 1 / -1; /* Resultados ocupa todo el ancho abajo */
+    }
+}
+
+@media (min-width: 900px) {
+     /* En desktop, apilar Input y Challenge en la columna 1, y dejar Gráfico en columna 2 */
+    main {
+        grid-template-columns: 1fr 1.5fr; /* Una columna para el formulario/juego, y una más grande para el gráfico */
+    }
+    #input-section {
+        grid-column: 1/-1;
+       
+        grid-row: 1;
+    }
+    #challenge-section {
+        grid-column: 1/-1;
+        grid-row: 4;
+    }
+    #visualization-section {
+        
+        grid-column: 1/-1;
+        grid-row: 3 ; /* Gráfico ocupa el espacio de Input y Challenge */
+    }
+    #results-section {
+        grid-column: 1 / -1; /* Resultados ocupa todo el ancho abajo */
+        grid-row: 2;
+    }
+}
+
+
+section {
+    background-color: var(--container-bg);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+h2 {
+    /* Estilo h2 original */
+    color: var(--primary-color);
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Formulario */
+#bisection-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.form-group {
+    width: 100%;
+}
+
+.interval-container {
+    display: flex;
+    gap: 15px;
+}
+
+input[type="text"], input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+input[type="text"]:focus, input[type="number"]:focus {
+     outline: none;
+     border-color: var(--primary-color);
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    font-weight: bold;
+}
+button:hover {
+    background-color: #0056b3;
+    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.4);
+}
+
+/* Estilos del Desafío */
+#challenge-info p {
+    margin: 0.5rem 0;
+    font-size: 1rem;
+}
+
+/* --- ESTILOS BARRA DE EXP Y NIVEL (NUEVO) --- */
+#exp-container {
+    margin-top: 15px;
+    padding: 10px 0;
+    text-align: center;
+    border-top: 1px dashed #ddd;
+}
+
+#level-display {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 8px;
+}
+
+#exp-bar-wrapper {
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    height: 20px;
+    margin: 5px auto 10px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 350px;
+}
+
+#exp-bar-fill {
+    height: 100%;
+    width: 0%; /* Inicialmente 0% */
+    background-color: var(--exp-color);
+    transition: width 0.5s ease-in-out;
+    border-radius: 10px 0 0 10px;
+}
+
+#exp-bar-text {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    line-height: 20px;
+    color: #333;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-shadow: 0 0 2px rgba(255, 255, 255, 0.7);
+}
+/* --- FIN ESTILOS BARRA DE EXP Y NIVEL --- */
+
+
+/* Tabla de Resultados */
+.table-container {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+th {
+    background-color: #f2f2f2;
+}
+
+/* Mensajes y Footer */
+.error {
+    color: var(--error-color);
+    text-align: center;
+    margin-top: 15px;
+    font-weight: bold;
+}
+.success {
+    color: var(--success-color);
+    background-color: #ecf8ec; 
+    border: 1px solid var(--success-color);
+    padding: 1rem;
+    margin-top: 15px;
+    border-radius: 4px;
+    font-weight: bold;
+    text-align: center;
+}
+.hidden {
+    display: none;
+}
+
+#summary-result {
+    padding: 15px;
+    background-color: #e9f7ff;
+    border: 1px solid #b3e0ff;
+    border-radius: 4px;
+    margin-top: 1rem;
+}
+
+#summary-result p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+footer {
+    text-align: center;
+    margin-top: 30px;
+    color: #777;
+    padding-top: 10px;
+}
