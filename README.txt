@@ -47,3 +47,10 @@ HTML
 (Ojo con las mayúsculas, minúsculas y tildes).
 
 Los nombres de los archivos de JavaScript que están dentro de la carpeta de libs manténgalos con ese nombre y no los cambie.
+
+Recomendado descargar Visual Studio Code de microsoft para poder ejecutar la pagina web de manera offline.
+ link de descarga: https://code.visualstudio.com
+
+
+
+
