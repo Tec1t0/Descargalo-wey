@@ -51,6 +51,8 @@ Los nombres de los archivos de JavaScript que están dentro de la carpeta de lib
 
 Al tener todos los archivos descargados solamente bastara con acceder a la carpeta donde estan los archivos y abrir el index.html.
 
+(Index.html abrirlo con cualquier buscador como google chrome, firefox, opera, etc)
+
 y listo a disfutar de la calculadora de metetodo de biseccion.
 
 
@@ -70,5 +72,7 @@ Luego finalmente apretar arriba a la izquierda en la ventana de "file" y open fo
 Seleccionar la carpeta donde estan todos los archivos anteriormente descargados.
 
 Finalmente seleccionar el archivo index.html y direccionarse al costado derecho y hacer click al simbolo que parece un triptico con lupa.
+
+Otra acceder a la calculadora (con internet) seria mediante este link: https://tec1t0.github.io/Calculadora-Metodo-de-Biseccion/
 
 
