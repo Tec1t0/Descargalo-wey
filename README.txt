@@ -48,9 +48,27 @@ HTML
 
 Los nombres de los archivos de JavaScript que están dentro de la carpeta de libs manténgalos con ese nombre y no los cambie.
 
-Recomendado descargar Visual Studio Code de microsoft para poder ejecutar la pagina web de manera offline.
+
+Al tener todos los archivos descargados solamente bastara con acceder a la carpeta donde estan los archivos y abrir el index.html.
+
+y listo a disfutar de la calculadora de metetodo de biseccion.
+
+
+Visual Studio Code:
+
+Si se quiere abrir la pagina web en Visual Studio Code de microsoft se debera descargar en el siguiente link:
  link de descarga: https://code.visualstudio.com
 
+En Visual Studio Code se recomienda descargar las siguientes extensiones:
+-HTML css support
+-Code runner
+-Live Preview
+-Live server
 
+Luego finalmente apretar arriba a la izquierda en la ventana de "file" y open folder o apretar la combinacion de "ctrl+k+ctrl+o"
+
+Seleccionar la carpeta donde estan todos los archivos anteriormente descargados.
+
+Finalmente seleccionar el archivo index.html y direccionarse al costado derecho y hacer click al simbolo que parece un triptico con lupa.
 
 
