@@ -1,3 +1,4 @@
+En pc:
 Descargar todos los archivos y dejar todos dentro de la misma carpeta.
 
 Ejemplo: crear carpeta (Método de Bisección) dentro de esta carpeta agregar los archivos obtenidos anteriormente (script.js, style.css, libs, index.html).
@@ -74,5 +75,15 @@ Seleccionar la carpeta donde estan todos los archivos anteriormente descargados.
 Finalmente seleccionar el archivo index.html y direccionarse al costado derecho y hacer click al simbolo que parece un triptico con lupa.
 
 Otra acceder a la calculadora (con internet) seria mediante este link: https://tec1t0.github.io/Calculadora-Metodo-de-Biseccion/
+
+En celular de manera 100% offline:
+
+Instala un Visor/Editor HTML: Busca e instala en tu celular una aplicación como "Acode", "HTML Viewer", o "WebCode" (para Android) o "Textastic" (para iOS). (asegurate de otrogarle permiso para acceder a los archivos)
+
+Organiza la Carpeta: Asegúrate de que la carpeta del proyecto que descargaste de GitHub (Calculadora-Metodo-de-Biseccion-main) esté bien ubicada en un lugar accesible de la memoria de tu celular.
+
+Abre el Proyecto: Usa la aplicación que instalaste para abrir la carpeta del proyecto o directamente el archivo index.html. La mayoría de estas aplicaciones tienen una función de "Previsualización" o "Abrir en Navegador Local" que gestiona las rutas correctamente, simulando un entorno de servidor.
+
+
 
 
